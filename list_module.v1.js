@@ -53,6 +53,8 @@ class VirtualScroll {
             style.textContent = `
                .list_body .list_item.vs-row-even { background-color: var(--row-even, #ffffff) !important; }
                .list_body .list_item.vs-row-odd  { background-color: var(--row-odd,  #ebebeb) !important; }
+               .list_body .list_item:hover,
+               .list_body .list_item.mhover { background-color: var(--list-row-hover) !important; }
             `;
             document.head.appendChild(style);
          }
