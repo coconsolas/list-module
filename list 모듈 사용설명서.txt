@@ -1,0 +1,215 @@
+// 데이터가 utf8 일 아닐경우 변환해주는 함수 및 처리
+// ex) $json = json_encode(utf8ize($data), JSON_UNESCAPED_UNICODE);
+FUNCTION utf8ize($mixed) {
+	if (is_array($mixed)) {
+		foreach ($mixed as $key => $value) {
+			$mixed[$key] = utf8ize($value);
+		}
+	} elseif (is_string($mixed)) {
+		return mb_convert_encoding($mixed, 'UTF-8', 'UTF-8');
+	}
+	return $mixed;
+}
+
+
+FUNCTION sanitize_for_json($str) {
+	return preg_replace('/[\x00-\x1F\x7F]/u', '', $str);
+}
+
+
+FUNCTION clean_array($array) {
+	array_walk_recursive($array, function (&$item) {
+		if (is_string($item)) {
+				$item = sanitize_for_json($item);
+		}
+	});
+	return utf8ize($array);
+}
+
+
+FUNCTION safe_json_encode($data) {
+	return json_encode(
+		clean_array($data),
+		JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES
+	);
+}
+
+
+// js (exceljs) border type
+// | 스타일 이름         | 설명
+// | ------------------ | -------------------------------------
+// | `thin`             | 얇은 선 (기본적으로 가장 많이 사용)
+// | `dotted`           | 점선 (········)
+// | `dashDot`          | 점-선 혼합 (— · — · —)
+// | `dashDotDot`       | 점-점-선 혼합 (— · · — · ·)
+// | `dashed`           | 대시 선 (— — —)       
+// | `double`           | 이중선 (=)
+// | `hair`             | 매우 얇은 선 (thin보다 더 얇음)
+// | `medium`           | 중간 굵기 선
+// | `mediumDashed`     | 중간 굵기의 대시 선
+// | `mediumDashDot`    | 중간 굵기의 점-선
+// | `mediumDashDotDot` | 중간 굵기의 점-점-선
+// | `slantDashDot`     | 사선 대시 점선 (지원 여부는 프로그램에 따라 다름)
+// | `none`             | 테두리 없음
+
+
+배열 값들 중에 NULL일 경우 가로 병합 NULL2일 경우 세로 병합. ( 세로병합은 메인,서브헤드에만. )
+
+// =====================================================================================================================================
+// 예제
+// =====================================================================================================================================
+	// > PHP 부분
+	$listhead = [
+		"_style" => [ "width:6%; border-bottom:0px", "width:14%", "width:14%", "width:21%", "width:14%" ],
+		"_sbj" => [ '날짜', '매출(판매기준)', '웹사이트', '게임이용', '회원' ],
+		"_excelsheet" => [ '날짜', '매출(판매기준)', 'NULL', '웹사이트', 'NULL', '게임이용', 'NULL', 'NULL', '회원', 'NULL' ],
+	];
+
+	$list_head_sub = [
+		"_style" => [ 
+			"width:6%; background-color:#dfe6ea; border-top:0px;", "width:7%;", "width:7%;", "width:7%;", "width:7%;", "width:7%;", "width:7%;", "width:7%;", "width:7%;", "width:7%;"
+		],
+		"_sbj" => [ 
+			'', '금액', '순구매자수', '게임실행수', '게임실행자수', '순이용자', '최고동접', '평균동접', '신규가입자', '누적가입자'
+		],
+		"_excelsheet" => [ 'NULL2', '금액', '순구매자수', '게임실행수', '게임실행자수', '순이용자', '최고동접', '평균동접', '신규/탈퇴', '누적가입자' ],
+	];
+
+	$_list_html_temp = [
+		"_style" => [
+			"width:5%", 
+			"width:12%", 
+			"width:6%;".$main_visit_uni_color, 
+			"width:6%;".$main_visit_user_color, 
+			"width:6.5%;".$main_use_launch_color, 
+			"width:7.5%;".$main_use_launchuser_color, 
+			"width:5%;".$main_use_uni_color, 
+			"width:5%;".$main_use_max_color, 
+			"width:5%;".$main_use_avg_color, 
+			"width:5%;".$main_mem_new_color, 
+			"width:5%;".$main_mem_sum_color, 
+			"width:3%;"
+		],
+		"_class" => [ 
+			'', '', 
+			$main_visit_uni_color,
+			$main_visit_user_color,
+			$main_use_launch_color,
+			$main_use_launchuser_color,
+			$main_use_uni_color,
+			$main_use_max_color,
+			$main_use_avg_color,
+			$main_mem_new_color,
+			$main_mem_sum_color,
+			'' ,
+		],
+		"_licontent" => [
+			"<a href='/mis/gameKPI/gameKPI_Day.mgame?game_big_sel=".$game_big_sel."&game_small_sel=".$main_code_name."'><b>".$main_code_name."</b></a>",
+			"쌩뚱포커 공통",
+			number_format($main_visit_uni)."<br/><font color='".$main_visit_uni_fnt_color."'>".$main_visit_uni_updown.number_format(abs($main_visit_uni_cnt))." / ".abs($main_visit_uni_pct)."%</font>",
+			number_format($main_visit_user)."<br/><font color='".$main_visit_user_fnt_color."'>".$main_visit_user_updown.number_format(abs($main_visit_user_cnt))." / ".abs($main_visit_user_pct)."%</font>",
+			number_format($main_use_launch)."<br/><font color='".$main_use_launch_fnt_color."'>".$main_use_launch_updown.number_format(abs($main_use_launch_cnt))."/".abs($main_use_launch_pct)."%</font>",
+			number_format($main_use_launchuser)."<br/><font color='".$main_use_launchuser_fnt_color."'>".$main_use_launchuser_updown.number_format(abs($main_use_launchuser_cnt))."/".abs($main_use_launchuser_pct)."%</font>",
+			number_format($main_use_uni)."<br/><font color='".$main_use_uni_fnt_color."'>".$main_use_uni_updown.number_format(abs($main_use_uni_cnt))."/".abs($main_use_uni_pct)."%</font>",
+			number_format($main_use_max)."<br/><font color='".$main_use_max_fnt_color."'>".$main_use_max_updown.number_format(abs($main_use_max_cnt))."/".abs($main_use_max_pct)."%</font>",
+			number_format($main_use_avg)."<br/><font color='".$main_use_avg_fnt_color."'>".$main_use_avg_updown.number_format(abs($main_use_avg_cnt))."/".abs($main_use_avg_pct)."%</font>",
+			number_format($main_use_avg)."<br/><font color='".$main_mem_new_fnt_color."'>".$main_mem_new_updown.number_format(abs($main_mem_new_cnt))."/".abs($main_mem_new_pct)."%</font>",
+			number_format($main_mem_sum)."<br/><font color='".$main_mem_sum_fnt_color."'>".$main_mem_sum_updown.number_format(abs($main_mem_sum_cnt))."/".abs($main_mem_sum_pct)."%</font>",
+			"<a href='/mis/issue/month_issue.mgame?start_ymd=".$start_ymd."&game_big_sel=".$game_big_sel."&game_small_sel=".$game_small_sel."'>이슈보기</a>",
+		],
+		"_excelsheet" => [ 
+			$main_code_name,
+			"쌩뚱포커 공통",
+			"NULL",
+			number_format($main_visit_uni)."\\n<font color='".$main_visit_uni_fnt_color."'>".$main_visit_uni_updown.number_format(abs($main_visit_uni_cnt))." / ".abs($main_visit_uni_pct)."%</font>",
+			number_format($main_visit_user)."\\n<font color='".$main_visit_user_fnt_color."'>".$main_visit_user_updown.number_format(abs($main_visit_user_cnt))." / ".abs($main_visit_user_pct)."%</font>",
+			number_format($main_use_launch)."\\n<font color='".$main_use_launch_fnt_color."'>".$main_use_launch_updown.number_format(abs($main_use_launch_cnt))."/".abs($main_use_launch_pct)."%</font>",
+			number_format($main_use_launchuser)."\\n<font color='".$main_use_launchuser_fnt_color."'>".$main_use_launchuser_updown.number_format(abs($main_use_launchuser_cnt))."/".abs($main_use_launchuser_pct)."%</font>",
+			number_format($main_use_uni)."\\n<font color='".$main_use_uni_fnt_color."'>".$main_use_uni_updown.number_format(abs($main_use_uni_cnt))."/".abs($main_use_uni_pct)."%</font>",
+			number_format($main_use_max)."\\n<font color='".$main_use_max_fnt_color."'>".$main_use_max_updown.number_format(abs($main_use_max_cnt))."/".abs($main_use_max_pct)."%</font>",
+			number_format($main_use_avg)."\\n<font color='".$main_use_avg_fnt_color."'>".$main_use_avg_updown.number_format(abs($main_use_avg_cnt))."/".abs($main_use_avg_pct)."%</font>",
+			number_format($main_use_avg)."\\n<font color='".$main_mem_new_fnt_color."'>".$main_mem_new_updown.number_format(abs($main_mem_new_cnt))."/".abs($main_mem_new_pct)."%</font>",
+			number_format($main_mem_sum)."\\n<font color='".$main_mem_sum_fnt_color."'>".$main_mem_sum_updown.number_format(abs($main_mem_sum_cnt))."/".abs($main_mem_sum_pct)."%</font>",
+		],
+	];
+
+	array_push($listdata_temp, $_list_html_temp);
+
+	// ..기타 처리 내용들
+
+	$listdata_rst = [
+      "rstCode" => 1,
+      "list" => $listdata_temp
+   ];
+
+	$list_head_json = safe_json_encode($listhead);
+   $list_head_sub_json = safe_json_encode($list_head_sub);
+	$list_data_json = safe_json_encode($listdata_rst);
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+	>> JS부분
+
+	<script type="module">
+		import { _RenderingList_v2, scrollAction, _excelCellExport } from '/js/list_module.v1.js?v=<?=time()?>';
+
+		const list_head      = JSON.parse(`<?=$list_head_json?>`);
+		const list_head_sub  = JSON.parse(`<?=$list_head_sub_json?>`);
+		const list_body      = JSON.parse(`<?=$list_data_json?>`);
+
+		_RenderingList_v2(list_head, list_head_sub, list_body, {"width":1400, "fsize":12});
+
+		document.addEventListener("scroll", function () { // 스크롤시 상단에 헤드 고정되게 하는 기능, 필요없으면 삭제. 모듈 호출에서도 삭제.
+			scrollAction();
+		});
+	</script>
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+	window._exportexcel = () => { // 이건 해당 페이지에서 함수로 사용하려고 선언한 부분.
+		const fileName		= `게임별KPI(일간) <?=date("Ymd")?>.xlsx`; // 파일명 정해주고
+		const sheetName	= `<?=$game_big_sel." ".$game_small_sel?>`; // 시트이름 정해주고
+
+		// 열 너비 기본값
+		// const columnWidths = [15,20,20,20,20,20,20,20,20,20,20,20]; // 각 셀 너비 정해주고
+
+		// 메인 헤드 + 서브헤드 병합 처리
+		_excelCellExport( // 이게 모듈에 선언되어있는 함수
+			fileName,
+			sheetName,
+			1,
+			{ rowhighlight: "" }, // 짝수행(even), 홀수행(odd) 중에 색상 넣을 행.
+			list_head._excelsheet,		// 메인 헤드
+			list_head_sub._excelsheet,	// 서브 헤드
+			list_body.list,	// 본문
+			// {
+			// 	mainStyle: {
+			// 		font: { bold: true, size: 10, color: { argb: '000000' } },
+			// 		fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'dfe6ea' } },
+			// 		border: { top:{style:'thin'}, left:{style:'thin'}, bottom:{style:'thin'}, right:{style:'thin'} }, // top, bottom 중 하나라도 thin인 경우 thin으로 나옴. 한쪽을 none으로 해야 원하는 스타일이 적용됨. (left, right도 동일)
+			// 		alignment: { horizontal: 'center', vertical: 'middle' }, // wrapText: true 하면 \n 줄바꿈 먹힘
+			// 		rowHeight: 25,
+			// 		columnWidths: columnWidths, // mainStyle에만 해두면 아래에는 자동으로 상속됨.
+			// 	},
+			// 	subStyle: {
+			// 		font: { bold: true, size: 10, color: { argb: '000000' } },
+			// 		fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'f2f2f2' } },
+			// 		border: { top:{style:'thin'}, left:{style:'thin'}, bottom:{style:'thin'}, right:{style:'thin'} }, // top, bottom 중 하나라도 thin인 경우 thin으로 나옴. 한쪽을 none으로 해야 원하는 스타일이 적용됨. (left, right도 동일)
+			// 		alignment: { horizontal: 'center', vertical: 'middle' }, // wrapText: true 하면 \n 줄바꿈 먹힘
+			// 		rowHeight: 25,
+			// 	},
+			// 	bodyStyle: {
+			// 		font: { size: 10, color: { argb: '000000' } },
+			// 		fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } },
+			// 		border: { top:{style:'thin'}, left:{style:'none'}, bottom:{style:'thin'}, right:{style:'dashed'} }, // top, bottom 중 하나라도 thin인 경우 thin으로 나옴. 한쪽을 none으로 해야 원하는 스타일이 적용됨. (left, right도 동일)
+			// 		alignment: { horizontal: 'center', vertical: 'middle' }, // wrapText: true 하면 \n 줄바꿈 먹힘
+			// 		rowHeight: 40,
+			// 	},
+			//		colorFromClass: { // list 배열에 _class가 있는 경우 사용하게 될 값. 해당 클래스가 있을 때 해당 클래스로 선언된 색상 배정.
+			//			pinkrow: "FFF5E9",
+			//			highlight_cell: "FFFFCC"
+			//		},
+			// }
+		);	
+	}

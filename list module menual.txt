@@ -1,0 +1,171 @@
+<?
+$listhead = [
+		"_style" => [ 
+			"width:100px;", "width:70px;",
+		],
+		"_sbj" => [ 
+			"구분 (일/시)", "합계", 
+      ],
+      "_excelsheet" => [ 
+			"구분 (일/시)", "합계", 
+		],
+	];
+
+
+
+$list_head_sub = [
+      "_style" => [
+         "width:100px;background-color: var(--list-head-bg);", "width:70px;background-color: var(--list-head-bg);",
+      ],
+      "_sbj" => [
+         "", "",
+      ],
+      "_excelsheet" => [ 
+			"날짜", "합계",
+		],
+   ];
+
+
+
+$_list_html_temp = [
+            "_style" => $list_head_sub["_style"],
+            "_class" => [
+               "", "",
+               $_t_2_value_chkZero, $_t_3_value_chkZero, $_t_4_value_chkZero, $_t_5_value_chkZero,
+               $_t_6_value_chkZero, $_t_7_value_chkZero, $_t_8_value_chkZero, $_t_24_value_chkZero, $_t_37_value_chkZero, $_t_38_value_chkZero,
+               $_t_9_value_chkZero, $_t_10_value_chkZero, $_t_11_value_chkZero, $_t_12_value_chkZero,
+               $_t_13_value_chkZero, $_t_14_value_chkZero, $_t_15_value_chkZero, $_t_16_value_chkZero, $_t_17_value_chkZero, $_t_18_value_chkZero,
+               $_t_19_value_chkZero, $_t_20_value_chkZero,
+               $_t_21_value_chkZero,
+               $_t_22_value_chkZero,
+               $_t_23_value_chkZero, $_t_29_value_chkZero,
+               $_t_25_value_chkZero, $_t_26_value_chkZero, $_t_27_value_chkZero, $_t_28_value_chkZero, $_t_29_value_chkZero, $_t_30_value_chkZero, $_t_31_value_chkZero, $_t_32_value_chkZero, $_t_33_value_chkZero, $_t_34_value_chkZero, $_t_35_value_chkZero, $_t_36_value_chkZero,
+            ],
+            "_licontent" => [
+               $_regdate, 
+               "<strong>".$_t_1_value_format."</strong>",
+               $_t_2_value_format, $_t_3_value_format, $_t_4_value_format, $_t_5_value_format,
+               $_t_6_value_format, $_t_7_value_format, $_t_8_value_format, $_t_24_value_format, $_t_37_value_format, $_t_38_value_format, 
+               $_t_9_value_format, $_t_10_value_format, $_t_11_value_format, $_t_12_value_format,
+               $_t_13_value_format, $_t_14_value_format, $_t_15_value_format, $_t_16_value_format, $_t_17_value_format, $_t_18_value_format, 
+               $_t_19_value_format, $_t_20_value_format,
+               $_t_21_value_format,
+               $_t_22_value_format,
+               $_t_23_value_format, $_t_29_value_format,
+               $_t_25_value_format, $_t_26_value_format, $_t_27_value_format, $_t_28_value_format, $_t_29_value_format, $_t_30_value_format, $_t_31_value_format, $_t_32_value_format, $_t_33_value_format, $_t_34_value_format, $_t_35_value_format, $_t_36_value_format, 
+            ],
+            "_excelsheet" => [ 
+               $_regdate,
+               $_t_1_value_format,
+               $_t_2_value_format, $_t_3_value_format, $_t_4_value_format, $_t_5_value_format,
+               $_t_6_value_format, $_t_7_value_format, $_t_8_value_format, $_t_24_value_format, $_t_37_value_format, $_t_38_value_format, 
+               $_t_9_value_format, $_t_10_value_format, $_t_11_value_format, $_t_12_value_format,
+               $_t_13_value_format, $_t_14_value_format, $_t_15_value_format, $_t_16_value_format, $_t_17_value_format, $_t_18_value_format, 
+               $_t_19_value_format, $_t_20_value_format,
+               $_t_21_value_format,
+               $_t_22_value_format,
+               $_t_23_value_format, $_t_29_value_format,
+               $_t_25_value_format, $_t_26_value_format, $_t_27_value_format, $_t_28_value_format, $_t_29_value_format, $_t_30_value_format, $_t_31_value_format, $_t_32_value_format, $_t_33_value_format, $_t_34_value_format, $_t_35_value_format, $_t_36_value_format, 
+            ],
+         ];
+
+
+
+
+$listdata_rst = [
+      "rstCode" => 1,
+      "list" => $listdata_temp
+   ];
+
+
+$list_head_json     = safe_json_encode($listhead);
+   $list_head_sub_json = safe_json_encode($list_head_sub);
+   $list_data_json     = safe_json_encode($listdata_rst);
+?>
+<script type="module">
+   import { _RenderingList_v2, _excelCellExport } from "/js/list_module.v1.js?v=<?=time()?>";
+
+   const list_head      = JSON.parse(`<?=$list_head_json?>`);
+   const list_head_sub  = JSON.parse(`<?=$list_head_sub_json?>`);
+   const list_body      = JSON.parse(`<?=$list_data_json?>`);
+
+   let horizon_scroll = (`<?=$view_type?>`) == "realtime" ? 2 : 1;
+   _RenderingList_v2(list_head, list_head_sub, list_body, {"width":"max-content", "horizonscrollcolcnt":horizon_scroll, "evenoddFlag":false, "headhover":true});
+
+
+   window._exportexcel = () => {
+
+      const list_content = {
+			excelFileName: `충전/판매 모니터링 [국내] <?=date("Ymd")?>`,
+			columnWidth: [
+            15, 15,
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15,
+         ],
+		};
+
+		if( ["daily", "monthly"].includes(`<?=$view_type?>`) ) {
+			list_content.excelFileName = `충전/판매 모니터링 [국내] <?=date("Ymd")?>`;
+         list_content.excelFileName += (`<?=$view_type?>` === "daily") ? " 일별" : " 월별";
+			list_content.columnWidth = [
+            15,
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15, 15, 15, 
+            15, 15, 15,
+         ];
+		}
+
+		// 메인 헤드 + 서브헤드 병합 처리
+		_excelCellExport(
+			`${list_content.excelFileName}.xlsx`,
+			`결제수단 <?=$start_ymd?>~<?=$end_ymd?>`,
+			1,
+			{ rowhighlight: "even", bgcolor: "F3F3F3" },
+			{ firstFlag: true },
+			list_head._excelsheet,			// 메인 헤드
+			list_head_sub._excelsheet,	// 서브 헤드
+			list_body.list,	// 본문
+			{
+				mainStyle: {
+					columnWidths: list_content.columnWidths
+				},
+				bodyStyle: {
+					font: { color: { argb: '000000' } },
+					border: { 
+						top: { style: 'hair' },
+						left: { style: 'hair' },
+						bottom: { style: 'hair' },
+						right: { style: 'hair' }
+					},
+					alignment: { horizontal: 'right', vertical: 'middle', wrapText: true },
+				},
+				colorFromClass: {
+					pinkrow: "FFF5E9",
+				},
+			}
+		);
+
+		// _dbmlog(`/rmSystem/monitoring/payment_log.log`, 1, {"log content" : "충전/판매 모니터링 [국내] 엑셀 파일 추출"});
+	}
+
+</script>
+<body>
+	<div class="list-container">
+		<div class="list_head"></div>
+		<div class="list_body">
+			데이터를 불러오는 중입니다
+			<div class="bigsmallCircle"></div>
+		</div>
+	</div>
+</body>

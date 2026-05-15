@@ -1,0 +1,81 @@
+/* 툴팁이 붙는 영역 */
+/* .tooltip-zone {
+   position: relative;
+   width: 400px;
+   height: 200px;
+   background: #4f6ef7;
+   border-radius: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: white;
+   font-size: 18px;
+   font-weight: bold;
+   cursor: default;
+   user-select: none;
+}
+*/
+
+/* JS에서 처리되도록 변경 */
+.tooltip-zone:hover .tooltip-box,
+.inline-tooltip-wrapper:hover .tooltip-box {
+   opacity: .9;
+   pointer-events: none;
+}
+
+/* .list_sub_head li span:hover .tooltip-box,
+.list_head li span:hover .tooltip-box {
+   opacity: 1;
+   pointer-events: none;
+} */
+
+/* 툴팁 박스 */
+.tooltip-box {
+   display: block;
+   position: fixed;
+   flex-direction: column;
+   opacity: 0;
+   background: rgba(20, 20, 30, 0.92);
+   color: #f0f0f0;
+   padding: 10px 14px;
+   border-radius: 8px;
+   font-size: 13px;
+   font-weight: normal;
+   line-height: 1.6;
+   /* max-width: 260px; */
+   /* max-width: max-content; */
+   width: max-content;
+   max-width: 280px;
+   pointer-events: none;
+   text-align: left;
+   transition: opacity 0.15s ease;
+   white-space: pre-wrap;
+   overflow-wrap: break-word;
+   word-break: keep-all;
+   top: 0;
+   left: 0;
+   z-index: 9999;
+}
+
+/* 예제 2: 텍스트 링크 스타일 */
+.inline-tooltip-wrapper {
+   position: relative;
+   display: inline-block;
+}
+
+.inline-tooltip-wrapper .tooltip-box {
+   /* max-width: 260px; */
+   width: max-content;
+}
+
+/* .highlighted {
+   background: #fff3cd;
+   border-bottom: 2px dashed #f59e0b;
+   padding: 2px 4px;
+   border-radius: 4px;
+   cursor: help;
+} */
+
+.list_head_item [data-tooltip] {
+  cursor: help; /* 또는 crosshair, pointer, zoom-in 등 */
+}

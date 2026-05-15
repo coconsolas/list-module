@@ -1,0 +1,600 @@
+/* ─── 디자인 토큰 ─── */
+:root {
+   /* --primary:       #4f46e5;
+   --primary-hover: #4338ca;
+   --bg-main:       #f8fafc;
+   --bg-card:       #ffffff;
+   --text-main:     #1e293b;
+   --text-muted:    #64748b;
+   --border:        #e2e8f0;
+   --header-bg:     #f1f5f9;
+   --row-hover:     #f8faff;
+   --sticky-shadow: rgba(0, 0, 0, 0.3); */
+   /* ─── 기본 색상 ─── */
+   --color-white:      #f8f9f6;
+   --color-black:      #000;
+   --color-red:        red;
+   --color-text-dark:  #333;
+   --color-text-gray:  #747474;
+
+   /* ─── 텍스트 추가 ─── */
+   --color-text-body:     #222;   /* 본문 기본 텍스트 */
+   --color-text-on-color: #f8f9f6;   /* 컬러 배경 위 텍스트 (버튼, 라디오) */
+
+   /* ─── btn_d (기본 버튼) ─── */
+   --btn-primary-border:        #6666ff;
+   --btn-primary-bg:            #9999ff;
+   --btn-primary-hover-shadow:  #ff6666;
+   --btn-primary-hover-bg:      #ff9999;
+
+   /* ─── 리스트 헤더 ─── */
+   /* --list-head-bg:          #dfe6ea; */
+   /* --list-head-border:      #c7c8ce; */
+   /* --list-head-bottom:      #c8d3db; */
+   /* --list-subhead-bg:       #f2f2f2; */
+   /* --list-head-mhover-bg:   #ccffffd7; */
+   /* --list-head-mhover-bg-none-opacity:   #ccffff; */
+   /* --list-head-mhover-ring: #697881; */
+
+   /* ─── Sticky ─── */
+   /* --sticky-shadow: rgba(0, 0, 0, 0.3); */
+   /* --sticky-border: #e2e2e2; */
+
+   /* ─── 리스트 셀/행 ─── */
+   /* --list-cell-border: #cecece; */
+   /* --list-top-border:  #adadad; */
+   /* --list-row-hover:   #ccffffad; */
+   /* --list-cell-hover:  #b0ffff; */
+
+   /* ─── 리스트 헤더 ─── */
+   --list-head-bg:          #d6d8de;
+   --list-head-border:      #a3a6ad;
+   --list-head-bottom:      #aeb4b9;
+   --list-subhead-bg:       #e6e7eb;
+   --list-head-mhover-bg:   #ccffffd7;
+   --list-head-mhover-bg-none-opacity:   #ccffff;
+   --list-head-mhover-ring: #697881;
+
+   /* ─── Sticky ─── */
+   --sticky-shadow: rgba(0, 0, 0, 0.3);
+   --sticky-border: #e2e2e2;
+
+   /* ─── 리스트 셀/행 ─── */
+   --list-cell-border: #a3a6ad;
+   --list-top-border:  #a3a6ad;
+   --list-row-hover:   #ccffffad;
+   --list-cell-hover:  #b0ffff;
+
+   /* ─── SVG 아이콘 ─── */
+   --icon-stroke:               #046D84;
+   --icon-stroke-hover:         #01b7e0;
+   --icon-stroke-default:       #333;
+   --icon-stroke-disabled:      #88b2bb;
+   --icon-stroke-disabled-hover:#93daeb;
+
+   /* ─── 상단 버튼 (list-top) ─── */
+   --btn-default-bg:          #d6d6d67e;
+   --btn-dark:                #555;
+   --btn-dark-semi:           #555555c7;
+   --btn-dark-transparent:    #55555500;
+   --btn-category-bg:         #cecece7e;
+   --btn-category-active-bg:  #c5c5c5;
+   --btn-excel-border:        #c4c4c4;
+   --btn-excel-color:         #238b1f;
+
+   /* ─── 카운팅 바 ─── */
+   --counting-shadow: #bcbec7;
+
+   /* ─── 복사 피드백 ─── */
+   --feedback-success:        #10b981;
+   --feedback-success-shadow: rgba(16, 185, 129, 0.4);
+   --feedback-fail:           #b91b10;
+   --feedback-fail-shadow:    rgba(185, 27, 16, 0.4);
+
+   /* 행 홀짝 수 배경색 */
+   --row-even: var(--bg-color);
+   --row-odd: #f0f3f7e3;
+
+   /* ─── 행 하이라이트 ─── */
+   --row-pink:   #FFF5E9;
+   --row-yellow: rgba(254, 255, 0, 0.259);
+   --row-blue:   #cce3ff54;
+}
+
+/* ─── 1. 전역 스타일 보정 ─── */
+.list-container {
+   margin-top: .5em;
+}
+.list-section {
+   position: relative;
+   width: 600px; /* 기존 인라인 스타일과 동일하게 설정 */
+}
+
+.list-wrapper {
+   display: flex;          /* 가로로 나열 */
+   align-items: flex-start;
+   gap: 10px;              /* 객체 사이의 간격 */
+   position: relative;
+}
+
+.left-section, .right-section {
+   /* 아까 호출하신 width: 900px에 맞춰 고정하거나 */
+   flex: 0 0 600px;
+   /* 혹은 화면에 맞춰 유연하게 늘어나게 설정 */
+   /* flex: 1; */
+}
+
+/* ─── 2. 리스트 컨테이너 (스크롤 관리) ─── */
+
+/* COUNTING BAR */
+/* .total_cnting{ display:inline-block; width:1300px;  }
+
+.total_cnting .topnotice { display:flex; float:left; line-height:1.4; }
+.total_cnting .topnotice  ul { display:flex; list-style:none; margin:.4em .8em .4em .2em; padding:0; }
+.total_cnting .topnotice  ul li { margin:.3em .2em .3em 0; padding:.2em .5em; border-radius:7px; }
+
+.total_cnting .navL{ display:flex; float:left; line-height:1.4; }
+.total_cnting .navL ul { display:flex; list-style:none; margin:.4em .8em .4em .2em; padding:0; }
+.total_cnting .navL ul li { margin:.3em .4em .3em 0; padding:.2em 1em; box-shadow:0 0 0 1px var(--counting-shadow) inset; border-radius:7px; }
+.total_cnting .navL ul li:not(:first-child) { background-color:var(--list-head-bg); }
+.total_cnting .navL ul li:first-child a { font-weight:bold; }
+.total_cnting .navL ul li:nth-child(2) { color:var(--color-red); } */
+
+.list-top {
+   display: flex;
+   font-size: 10pt;
+   padding: 1em 0;
+}
+
+.list-top .navL {
+   display: flex;
+   align-items: center;
+   flex: 1;
+   gap: .2em;
+   flex-direction: row;
+}
+
+.list-top .navR {
+   display: flex;
+   align-items: center;
+   gap: .2em;
+   padding: 0;
+}
+
+/* BUTTON */
+.list-top button {
+   cursor: pointer;
+   padding: 0 10px;
+   border: 0;
+   border-radius: 2px;
+   border: 1px solid transparent;
+   background: var(--btn-default-bg);
+   height: var(--searchbtn-ele-height);
+   line-height: 1px;
+}
+
+.list-top .search_btn {
+   margin-left: 8px;
+   background: var(--btn-dark-semi);
+   color: var(--color-text-on-color);
+}
+
+.list-top .search_btn:hover {
+   background: var(--btn-dark);
+   color: var(--color-text-on-color);
+}
+
+.list-top .category_btn {
+   margin: 0;
+   padding: 0 10px;
+   background: var(--btn-category-bg);
+   box-sizing: border-box;
+   color: var(--color-text-dark);
+}
+
+.list-top .category_btn.activebtn {
+   background: var(--btn-category-active-bg);
+   color: var(--color-black);
+}
+
+.list-top .excel_btn {
+   margin: 0;
+   border: 1px solid var(--btn-excel-border);
+   background: var(--color-text-on-color);
+   color: var(--btn-excel-color);
+   font-weight: bold;
+}
+
+.list-top .excel_btn:hover {
+   border: 1px solid var(--btn-excel-color);
+   background: var(--btn-excel-color);
+   color: var(--color-text-on-color);
+}
+
+.list-top .reset_btn {
+   border: 1px solid var(--btn-dark-transparent);
+}
+
+.list-top .category_btn:hover,
+.list-top .reset_btn:hover {
+   border: 1px solid var(--btn-dark);
+}
+
+
+.list_body {
+   /* overflow-y: auto; */
+   /* overflow-x: hidden; */
+   overflow: visible !important; /* 내부 sticky를 방해하지 않도록 */
+   display: block;
+   width: 100%;
+   /* max-height: 600px; */
+   border-top: 4px double var(--list-top-border);
+   margin-top: .5em;
+}
+
+/* 로딩 객체를 갖고 있는 경우 */
+.list_body:has(.bounceCircle, .squareSearch, .bigsmallCircle, .torightCircle, .squareRound, .bar1, .spin1, .spin2, .glowing1, .square3rd1, .square3rd2, .slime1) {
+   position: relative;
+   width: 100%;
+   height: auto;
+   display: flex;
+   padding: 5em 0;
+   color: var(--color-text-body);
+   justify-content: center;
+   align-items: center;
+   flex-direction: column-reverse;
+}
+.list_body:has(.bounceCircle, .squareSearch, .bigsmallCircle, .torightCircle, .squareRound, .bar1, .spin1, .spin2, .glowing1, .square3rd1, .square3rd2, .slime1)::before {
+   content: "";
+   position: absolute;
+   top: -2px;
+   left: -2px;
+   right: -2px;
+   bottom: -2px;
+   border: 1px dashed var(--btn-dark);
+   z-index: -1;
+   border-radius: inherit;
+}
+
+/* ─── 3. 헤더 고정 (핵심) ─── */
+.list_head, .list_head_v2 {
+   position: sticky;
+   top: 0;
+   z-index: 8;
+   background-color: var(--color-white);
+   display: block !important; /* table 제거 */
+}
+
+.list_head_sub {
+   position: sticky;
+   top: 30px;
+   z-index: 7;
+   /* background: var(--color-text-on-color); */
+}
+
+.list_head_item {
+   display: flex !important; /* Flex로 변경하여 sticky 안정성 확보 */
+   width: 100%;
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   background-color: transparent;
+}
+
+.list_head_item li {
+   display: flex;
+   text-align: center;
+   align-items: center;
+   justify-content: center;
+   /* height: 40px; */
+   /* line-height: 2.5; */
+   line-height: 1.5;
+   padding: .5em 0;
+   font-weight: bold;
+   font-size: 12px;
+   box-sizing: border-box;
+}
+
+.list_head .list_head_item li {
+   border-radius: 5px;
+   background-color: var(--list-head-bg);
+   border-right: 1px dashed var(--list-head-border);
+}
+
+.list_head_v2 .list_head_item,
+.list_head_sub .list_head_item {
+   border-bottom: 1px solid var(--list-head-bottom);
+}
+.list_head_v2 .list_head_item li {
+   border-radius: 5px 5px 0 0;
+   border-right: 1px dashed var(--list-head-border);
+   background-color: var(--list-head-bg);
+}
+
+.list_head_sub .list_head_item li {
+   border-right: 1px dashed var(--list-head-border);
+   background-color:var(--list-subhead-bg);
+}
+
+.list_head.is-sticky li {
+   border-radius:7px 7px 0 0 !important;
+}
+
+.list_head_v2.is-sticky {
+   box-shadow: unset;
+}
+
+.list_head .mhover {
+   background-color: var(--list-head-mhover-bg) !important;
+   box-shadow: 0px 0px 0px 1px var(--list-head-mhover-ring) inset;
+}
+
+.list_item .mhover {
+   background-color: var(--list-head-mhover-bg-none-opacity) !important;
+}
+
+/* ─── 4. 바디 리스트 (Flex 레이아웃) ─── */
+.list_item {
+   display: flex !important; /* Flex로 변경 */
+   width: max-content; /* 중요: 내부 콘텐츠 합만큼 늘어나야 가로 스크롤이 생김 */
+   min-width: 100%;    /* 하지만 최소 너비는 컨테이너만큼 */
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   border-bottom: 0.5px solid var(--list-cell-border);
+   transition: background-color 0.2s;
+}
+
+.list_item:hover {
+   background-color: var(--list-row-hover) !important;
+}
+
+.list_item li {
+   display: flex;
+   min-width: 0;
+   flex-shrink: 0;
+   text-align: center;
+   align-items: center;
+   justify-content: center;
+   padding: 8px 0;
+   font-size: 12px;
+   border-right: 0.5px dashed var(--list-cell-border);
+   box-sizing: border-box;
+   white-space: nowrap;
+}
+
+.list_item li a {
+   display: block;      /* 너비를 가지기 위해 block 설정 */
+   /*width: 100%;*/         /* 부모 li 너비에 맞춤 */
+   width: max-content;
+
+   overflow: hidden;    /* 넘치는 부분 숨김 */
+   text-overflow: ellipsis; /* 말줄임표(...) 표시 */
+   white-space: nowrap; /* 줄바꿈 금지 */
+}
+
+.list_item svg {
+   width: 14px;
+   height: 14px;
+   margin:0 .2em;
+   stroke: var(--icon-stroke);
+   transition: stroke 0.2 ease;
+}
+
+.list_item svg:hover {
+   width: 14px;
+   height: 14px;
+   margin:0 .2em;
+   stroke: var(--icon-stroke-hover);
+   transition: stroke 0.2 ease;
+}
+
+.list_item svg.icon {
+   width: 14px;
+   height: 14px;
+   margin:0 .2em;
+   stroke: var(--icon-stroke-default);
+   transition: stroke 0.2 ease;
+}
+
+.list_item svg.disable {
+   width: 14px;
+   height: 14px;
+   margin:0 .2em;
+   stroke: var(--icon-stroke-disabled);
+   transition: stroke 0.2 ease;
+}
+
+.list_item svg.disable:hover {
+   width: 14px;
+   height: 14px;
+   margin:0 .2em;
+   stroke: var(--icon-stroke-disabled-hover);
+   transition: stroke 0.2 ease;
+}
+
+.list_item li.align-left   { text-align: left; }
+.list_item li.align-right  { text-align: right; }
+
+.list_item li:last-child, 
+.list_head_item li:last-child {
+   border-right: none;
+}
+
+/* 등장 애니메이션 정의 */
+@keyframes slideDown {
+   from {
+      transform: translateY(-100%);
+      opacity: 0;
+   }
+   to {
+      transform: translateY(0);
+      opacity: 1;
+   }
+}
+.is-sticky {
+   box-shadow: 0 10px 8px -4px var(--sticky-shadow);
+   border-bottom: 1px solid var(--sticky-border);
+   animation: slideDown 0.2s ease-out;
+}
+
+.sticky-col {
+   /* background-color: var(--list-head-bg); */
+   position: sticky !important;
+   left: var(--sticky-left, 0px) !important;
+   background-color: rgba(223, 230, 234, 1);
+   z-index: 7;
+}
+
+.list_head .sticky-col,
+.list_head_v2 .sticky-col,
+.list_head_sub .sticky-col {
+   z-index: 8;
+}
+
+.list_item:not(:has(.nodata)):not(:has(.sticky-col)):hover {
+   background-color:var(--list-row-hover);
+}
+
+.list_item:not(:has(.nodata)):not(:has(.sticky-col)) li:hover {
+   background-color:var(--list-cell-hover);
+}
+
+.list_item .nodata {
+   width: 100%;
+   padding:6px 4px;
+   /* border-bottom:1px solid var(--list-cell-border); */
+   background-color: transparent !important;
+   vertical-align:middle;
+   font-size:16px;
+   text-align: center;
+}
+
+/* .list_item li:not(:has(.nodata)):hover {
+   background-color:var(--list-row-hover);
+}
+
+.list_item li:not(:has(.nodata)):not(:last-child) {
+   border-right:0.5px dashed var(--list-cell-border);
+   border-bottom:0.5px solid var(--list-cell-border);
+}
+
+.list_item li:not(:has(.nodata)):last-child {
+   border-right:0px dashed var(--list-cell-border);
+   border-bottom:0.5px solid var(--list-cell-border);
+} */
+
+.sticky-last {
+   box-shadow: 7px 0px 7px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── 5. 유동적 텍스트 정렬 및 생략 처리 ─── */
+.inline-tooltip-wrapper {
+   display: block;
+   width: 100%;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   padding: 0 4px;
+}
+
+/* 왼쪽 정렬이 필요한 경우 (프로그램명 등) */
+.list_item li[style*="text-align:left"],
+.list_item li[style*="text-align: left"] {
+   justify-content: flex-start !important;
+   padding-left: 1em;
+   padding-right: .5em;
+}
+
+.list_item li[style*="text-align:right"],
+.list_item li[style*="text-align: right"] {
+   justify-content: flex-end !important;
+   padding-right: 1em;
+   padding-right: .5em;
+}
+
+.list_head_item li[style*="width:auto"],
+.list_head_item li[style*="width: auto"],
+.list_item li[style*="width:auto"],
+.list_item li[style*="width: auto"] {
+   flex: 1 !important;  /* 이게 바로 "남은 값 자동 지정" 속성입니다 */
+   width: auto !important; 
+   /*justify-content: flex-start !important;*/ /* 보통 길어지는 칸은 왼쪽 정렬 */
+   /* padding-left: 15px !important; */
+}
+
+.pinkrow      { background-color: var(--row-pink);   }
+.highlight_cell  { background-color: var(--row-yellow); }
+.highlight_cell2 { background-color: var(--row-blue);  }
+.fontbold { font-weight:600; }
+
+
+.text_highlight {
+   text-decoration:none;
+   animation-duration: 1s;
+   animation-name: rainbow;
+   animation-iteration-count: infinite;
+}
+
+.copy-feedback {
+   position: absolute;
+   width: max-content;
+   transform: translateX(-50%);
+   background: var(--feedback-success);
+   color: var(--color-text-on-color);
+   padding: 4px 8px;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 400;
+   white-space: nowrap;
+   pointer-events: none;
+   opacity: 0;
+   z-index:9;
+   box-shadow: 0 4px 12px var(--feedback-success-shadow);
+}
+
+.copy-feedback.failtxt {
+   background: var(--feedback-fail) !important;
+   box-shadow: 0 4px 12px var(--feedback-fail-shadow) !important;
+}
+
+.copy-feedback::after {
+   content: '';
+   position: absolute;
+   bottom: -6px;
+   left: 50%;
+   transform: translateX(-50%);
+   width: 0;
+   height: 0;
+   border-left: 6px solid transparent;
+   border-right: 6px solid transparent;
+   border-top: 6px solid var(--feedback-success);
+}
+
+.copy-feedback.failtxt::after{
+   border-top: 6px solid var(--feedback-fail) !important;
+}
+
+/* 복사 애니메이션 */
+.copy-feedback {
+   animation: showFeedback .5s ease-in-out;
+}
+
+@keyframes showFeedback {
+   0% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(10px);
+   }
+   10% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+   }
+   90% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+   }
+   100% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-10px);
+   }
+}
